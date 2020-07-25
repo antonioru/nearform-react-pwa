@@ -1,9 +1,11 @@
-import { createMemoryHistory } from 'history'
-import React from 'react'
-import { renderToString } from 'react-dom/server'
-import { createTypeStyle, getStyles } from 'typestyle'
-import { AppShell } from '../client/js/AppShell'
-import { colors } from '../client/js/styles/common'
+const { createMemoryHistory } = require('history')
+const { React } = require('react')
+const { renderToString } = require('react-dom/server')
+const { createTypeStyle, getStyles } = require('typestyle')
+const { AppShell } = require('../client/js/AppShell')
+const { colors } = require('../client/js/styles/common')
+
+require('core-js')
 
 const globalStyles = createTypeStyle() // Instantiate a different typestyle sheet since global styles won't be regenerated from the client
 
@@ -42,7 +44,7 @@ globalStyles.cssRule('.active', {
   fontWeight: '600',
 })
 
-export async function renderPage(request, reply) {
+module.exports.default = module.exports.renderPage = async function renderPage(request, reply) {
   // Prepare the history
   const history = createMemoryHistory({ initialEntries: [request.req.url] })
 

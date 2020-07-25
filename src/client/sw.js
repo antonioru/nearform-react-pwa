@@ -1,5 +1,9 @@
+import { precacheAndRoute } from 'workbox-precaching'
+
+precacheAndRoute(self.__WB_MANIFEST)
+
 // this value will be replaced at build time
-let version = 'VERSION'
+const version = 'VERSION'
 
 workbox.setConfig({ debug: SW_DEBUG })
 workbox.skipWaiting()
@@ -29,11 +33,11 @@ workbox.precaching.precache([
 workbox.precaching.precacheAndRoute(self.__precacheManifest || [])
 
 // cleanup old caches except precache
-self.addEventListener('activate', event => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(cacheKeys => {
-      const oldKeys = cacheKeys.filter(key => key.indexOf('hn-pwa-precache') === -1 && key.indexOf(version) === -1)
-      const deletePromises = oldKeys.map(oldKey => caches.delete(oldKey))
+    caches.keys().then((cacheKeys) => {
+      const oldKeys = cacheKeys.filter((key) => key.indexOf('hn-pwa-precache') === -1 && key.indexOf(version) === -1)
+      const deletePromises = oldKeys.map((oldKey) => caches.delete(oldKey))
       return Promise.all(deletePromises)
     })
   )

@@ -34,20 +34,20 @@ module.exports = function(environment) {
         ],
       },
     ]),
-    new CopyWebpackPlugin([
-      {
-        from: 'src/client/manifest.json',
-        to: 'manifest.json',
-        toType: 'file',
-      },
-    ]),
-    new CopyWebpackPlugin([
-      {
-        from: 'src/client/robots.txt',
-        to: 'robots.txt',
-        toType: 'file',
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'src/client/manifest.json',
+          to: 'manifest.json',
+          toType: 'file',
+        },
+        {
+          from: 'src/client/robots.txt',
+          to: 'robots.txt',
+          toType: 'file',
+        },
+      ],
+    }),
     new ReplaceInFileWebpackPlugin([
       {
         dir: 'dist/client',
@@ -55,7 +55,7 @@ module.exports = function(environment) {
         rules: [
           {
             search: /NEARFORM_BRAND_MAIN/gi,
-            replace: clientConstants.colors['NEARFORM_BRAND_MAIN'],
+            replace: clientConstants.colors.NEARFORM_BRAND_MAIN,
           },
         ],
       },
@@ -69,25 +69,25 @@ module.exports = function(environment) {
         analyzerMode: 'disabled',
         generateStatsFile: true,
         statsFilename: '../../coverage/client-bundle-stats.json',
-      })
+      }),
     )
   } else {
     plugins.push(
       new BundleAnalyzerPlugin({
         openAnalyzer: false,
-      })
+      }),
     )
   }
   plugins.push(
     new InjectManifest({
-      swSrc: 'src/client/sw.js',
+      swSrc: './src/client/sw.js',
       swDest: 'sw.js',
       exclude: [/\.map$/],
-    })
+    }),
   )
 
   return {
-    entry: './src/client/application.jsx',
+    entry: ['core-js', './src/client/application.jsx'],
     output: {
       path: resolve(__dirname, 'dist/client'),
       filename: 'app.js',
@@ -104,10 +104,6 @@ module.exports = function(environment) {
           exclude: /node_modules|(src\/server)/,
           use: {
             loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-react'],
-              plugins: ['@babel/plugin-proposal-object-rest-spread'],
-            },
           },
         },
         {

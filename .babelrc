@@ -1,4 +1,18 @@
 {
-  "presets": [["@babel/preset-env", { "targets": { "node": true } }], "@babel/preset-react"],
-  "plugins": ["@babel/plugin-proposal-object-rest-spread"]
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "corejs": 3,
+        "useBuiltIns": "entry",
+        "targets": {
+          "node": true
+        }
+      }
+    ],
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "esx-ssr"
+  ]
 }
